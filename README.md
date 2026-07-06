@@ -2,24 +2,25 @@
 
 ## Method basis
 
-R functions for expression-matched gene-set scoring in bulk RNA-seq data,
-based on the expression-binned control subtraction used by Seurat's
+This repository contains R functions for expression-matched gene-set scoring in bulk RNA-seq data,
+based heavily on the expression-binned control subtraction methodology used by Seurat's
 [`AddModuleScore()` documentation](https://satijalab.org/seurat/reference/addmodulescore)
 and
 [`AddModuleScore()` source code](https://github.com/satijalab/seurat/blob/HEAD/R/utilities.R).
-The same scoring idea traces back to Tirosh et al.'s
+Tirosh et al. employs this method for gene set scoring in the context of single-cell data
 [_Science_ melanoma single-cell RNA-seq study](https://pubmed.ncbi.nlm.nih.gov/27124452/),
 where expression-matched control genes were used to score gene programs.
 
-This repository is independent of Seurat and the Satija Lab. It is not part of
-the official Seurat project, is not maintained by the Seurat authors, and does
-not call Seurat internally. The implementation here applies the same control
-subtraction principle to normalized bulk RNA-seq matrices, where rows are genes
-and columns are samples.
+This repository is not associated with the official Seurat project and does
+not call Seurat internally. I implemented a bulk RNA-seq version of their AddModuleScore 
+methodology because I wanted to see if those same scoring principles generalize to bulk data, where
+columns are samples and not individual cells.
 
-I wrote this for work-related bulk RNA-seq analyses after comparing several
-single-sample gene-set scoring approaches. I am sharing it as a small reference
-implementation that others can inspect, test, adapt, or improve.
+I am sharing the repository as a small reference implementation that others can inspect, test, adapt, or improve
+for their own workflows.
+
+No need to cite this repository or paper -- please cite the original Seurat authors since this method
+is derivative of their work.
 
 `calc_bulk_module_score()` scores each sample as the mean of the module genes
 minus the mean of expression-matched control genes. A score therefore measures
