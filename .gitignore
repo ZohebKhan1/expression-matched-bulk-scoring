@@ -1,10 +1,10 @@
-# R/session state
+# R/sess state
 .Rhistory
 .RData
 .Ruserdata
 .Rproj.user/
 
-# Raw/private data
+# raw/priv data
 data/raw/
 raw/
 *.fastq
@@ -12,9 +12,6 @@ raw/
 *.bam
 *.bai
 
-# Generated report build artifacts
-# Note: report/assets/figures/ is tracked on purpose. The PNG/SVG figures are
-# shown in the README and the published report, so they must be committed.
 report/_site/
 report/index.Rmd
 report/index.knit.md
@@ -29,11 +26,11 @@ renv/staging/
 renv/python/
 renv/sandbox/
 
-# Local editor/system files
+# editor/system files
 .vscode/
 .idea/
 
-# Temporary files
+# temp
 *.tmp
 *.log
 .DS_Store
