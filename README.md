@@ -1,8 +1,27 @@
 # Expression-matched bulk scoring
 
+[View the rendered tutorial](https://zohebkhan1.github.io/expression-matched-bulk-scoring/report/)
+
+## Method basis
+
 R functions for expression-matched gene-set scoring in bulk RNA-seq data,
-derived from the control-subtraction strategy used by Seurat's
-[`AddModuleScore()`](https://satijalab.org/seurat/reference/addmodulescore).
+based on the expression-binned control subtraction used by Seurat's
+[`AddModuleScore()` documentation](https://satijalab.org/seurat/reference/addmodulescore)
+and
+[`AddModuleScore()` source code](https://github.com/satijalab/seurat/blob/HEAD/R/utilities.R).
+The same scoring idea traces back to Tirosh et al.'s
+[_Science_ melanoma single-cell RNA-seq study](https://pubmed.ncbi.nlm.nih.gov/27124452/),
+where expression-matched control genes were used to score gene programs.
+
+This repository is independent of Seurat and the Satija Lab. It is not part of
+the official Seurat project, is not maintained by the Seurat authors, and does
+not call Seurat internally. The implementation here applies the same control
+subtraction principle to normalized bulk RNA-seq matrices, where rows are genes
+and columns are samples.
+
+I wrote this for work-related bulk RNA-seq analyses after comparing several
+single-sample gene-set scoring approaches. I am sharing it as a small reference
+implementation that others can inspect, test, adapt, or improve.
 
 `calc_bulk_module_score()` scores each sample as the mean of the module genes
 minus the mean of expression-matched control genes. A score therefore measures
@@ -14,32 +33,6 @@ The repository has three functions:
 - `calc_bulk_module_score()` — expression-matched module scores for one or more gene sets
 - `perm_bulk_module_score()` — permutation test comparing a gene set against matched or random null sets
 - `plot_bulk_module_score_boxplot()` — boxplot of module scores across a sample annotation
-
-A worked tutorial on the GSE122380 iPSC-to-cardiomyocyte differentiation time
-course is in `report/` and is reproduced by
-`scripts/01_run_GSE122380_module_score_tutorial.R`. Once GitHub Pages is enabled
-it is served at `https://<owner>.github.io/<repository>/`.
-
-## Provenance and scope
-
-This workflow is an independent bulk RNA-seq adaptation of the
-expression-matched gene-program scoring idea implemented in Seurat's
-[`AddModuleScore()` documentation](https://satijalab.org/seurat/reference/addmodulescore)
-and
-[`AddModuleScore()` source code](https://github.com/satijalab/seurat/blob/HEAD/R/utilities.R).
-The scoring principle traces back to Tirosh et al.'s
-[_Science_ melanoma single-cell RNA-seq study](https://pubmed.ncbi.nlm.nih.gov/27124452/),
-which used expression-matched control subtraction to score gene programs.
-
-This repository is not part of the official Seurat project and is not
-maintained by the Seurat authors. The code here does not call Seurat
-internally; it applies the same general control-subtraction idea to a normalized
-bulk RNA-seq genes-by-samples matrix.
-
-I wrote this after comparing several single-sample scoring approaches for
-work-related bulk RNA-seq analyses. The method was useful enough in those
-analyses that I am making the code available for others who want to test,
-adapt, or improve the same idea.
 
 ## Get the functions
 
