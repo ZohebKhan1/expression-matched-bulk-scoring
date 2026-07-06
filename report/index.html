@@ -1,0 +1,1051 @@
+<!doctype html>
+<html lang="" xml:lang="" >
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Expression-matched bulk scoring</title>
+    <meta
+      name="description"
+      content="Single-sample control-matched gene set scoring for bulk RNA-seq."
+    />
+    <meta
+      name="generator"
+      content="bookdown #bookdown:version# and GitBook 2.6.7"
+    />
+
+    <meta property="og:title" content="Expression-matched bulk scoring" />
+    <meta property="og:type" content="book" />
+         <meta property="og:description" content="Single-sample control-matched gene set scoring for bulk RNA-seq." />
+     
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Expression-matched bulk scoring" />
+         <meta name="twitter:description" content="Single-sample control-matched gene set scoring for bulk RNA-seq." />
+        
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+         <!--bookdown:link_prev-->
+    <!--bookdown:link_next-->
+      <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>       <style type="text/css">
+      html { -webkit-text-size-adjust: 100%; }
+      pre > code.sourceCode { white-space: pre; position: relative; }
+      pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+      pre > code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      pre > code.sourceCode { white-space: pre-wrap; }
+      pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+          color: #aaaaaa;
+        }
+      pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+      div.sourceCode
+        {   }
+      @media screen {
+      pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
+      code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+      code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+      code span.at { color: #7d9029; } /* Attribute */
+      code span.bn { color: #40a070; } /* BaseN */
+      code span.bu { color: #008000; } /* BuiltIn */
+      code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+      code span.ch { color: #4070a0; } /* Char */
+      code span.cn { color: #880000; } /* Constant */
+      code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+      code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+      code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+      code span.dt { color: #902000; } /* DataType */
+      code span.dv { color: #40a070; } /* DecVal */
+      code span.er { color: #ff0000; font-weight: bold; } /* Error */
+      code span.ex { } /* Extension */
+      code span.fl { color: #40a070; } /* Float */
+      code span.fu { color: #06287e; } /* Function */
+      code span.im { color: #008000; font-weight: bold; } /* Import */
+      code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+      code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+      code span.op { color: #666666; } /* Operator */
+      code span.ot { color: #007020; } /* Other */
+      code span.pp { color: #bc7a00; } /* Preprocessor */
+      code span.sc { color: #4070a0; } /* SpecialChar */
+      code span.ss { color: #bb6688; } /* SpecialString */
+      code span.st { color: #4070a0; } /* String */
+      code span.va { color: #19177c; } /* Variable */
+      code span.vs { color: #4070a0; } /* VerbatimString */
+      code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    </style>
+    
+    <style type="text/css">
+      
+        margin-left: 1.5em;
+        text-indent: -1.5em;
+      }
+    </style>
+         <link
+      rel="stylesheet"
+      href="style.css"
+      type="text/css"
+      
+    />
+      </head>
+
+  <body>
+    <!--bookdown:title:start-->
+        <div id="header">
+      <h1 class="title">Expression-matched bulk scoring</h1>
+             </div>
+        <!--bookdown:title:end-->
+
+    <!--bookdown:toc:start-->
+    <div
+      class="book without-animation with-summary font-size-2 font-family-1"
+      data-basepath="."
+    >
+      <div class="book-summary">
+        <nav role="navigation">
+          <!--bookdown:toc2:start-->
+           <ul>
+<li><a href="#introduction" id="toc-introduction"><span class="toc-section-number">1</span> Introduction</a>
+<ul>
+<li><a href="#citation-and-reuse" id="toc-citation-and-reuse"><span class="toc-section-number">1.1</span> Citation and reuse</a></li>
+</ul></li>
+<li><a href="#gse122380-bulk-rna-seq-time-course-dataset" id="toc-gse122380-bulk-rna-seq-time-course-dataset"><span class="toc-section-number">2</span> GSE122380 bulk RNA-seq time-course dataset</a></li>
+<li><a href="#background" id="toc-background"><span class="toc-section-number">3</span> Background</a>
+<ul>
+<li><a href="#background-on-expression-matched-gene-program-scoring" id="toc-background-on-expression-matched-gene-program-scoring"><span class="toc-section-number">3.1</span> Background on expression-matched gene-program scoring</a></li>
+<li><a href="#bulk-rna-seq-implementation" id="toc-bulk-rna-seq-implementation"><span class="toc-section-number">3.2</span> Bulk RNA-seq implementation</a></li>
+<li><a href="#why-subtract-matched-controls" id="toc-why-subtract-matched-controls"><span class="toc-section-number">3.3</span> Why subtract matched controls?</a></li>
+</ul></li>
+<li><a href="#setup-for-bulk-module-gene-set-scoring" id="toc-setup-for-bulk-module-gene-set-scoring"><span class="toc-section-number">4</span> Setup for bulk module gene set scoring</a></li>
+<li><a href="#go-and-msigdb-module-scores-for-gse122380" id="toc-go-and-msigdb-module-scores-for-gse122380"><span class="toc-section-number">5</span> GO and MSigDB module scores for GSE122380</a></li>
+<li><a href="#custom-marker-score-visualization" id="toc-custom-marker-score-visualization"><span class="toc-section-number">6</span> Custom marker score visualization</a></li>
+<li><a href="#module-score-correlation-scatterplots" id="toc-module-score-correlation-scatterplots"><span class="toc-section-number">7</span> Module score correlation scatterplots</a></li>
+<li><a href="#alternative-module-score-visualizations" id="toc-alternative-module-score-visualizations"><span class="toc-section-number">8</span> Alternative module-score visualizations</a></li>
+<li><a href="#custom-marker-permutation-tests" id="toc-custom-marker-permutation-tests"><span class="toc-section-number">9</span> Custom marker permutation tests</a></li>
+<li><a href="#references" id="toc-references"><span class="toc-section-number">10</span> References</a></li>
+<li><a href="#session-info" id="toc-session-info"><span class="toc-section-number">11</span> Session Info</a></li>
+</ul> 
+          <!--bookdown:toc2:end-->
+        </nav>
+      </div>
+
+      <div class="book-body">
+        <div class="body-inner">
+          <div class="book-header" role="navigation">
+            <h1>
+              <i class="fa fa-circle-o-notch fa-spin"></i
+              ><a href="./"
+                >Expression-matched bulk scoring</a
+              >
+            </h1>
+          </div>
+
+          <div class="page-wrapper" tabindex="-1" role="main">
+            <div class="page-inner">
+              <section class="normal" id="section-">
+                
+                <!--bookdown:toc:end-->
+                <!--bookdown:body:start-->
+                <div class="tutorial-title-block">
+                <h1 class="title">
+                Expression-matched bulk scoring
+                </h1>
+                <div class="tutorial-subtitle">
+                Single-sample control-matched gene set scoring for bulk RNA-seq
+                </div>
+                <div class="tutorial-meta-block">
+                <div>
+                <span>Authors:</span> Zoheb Khan [aut, cre]
+                </div>
+                <div>
+                <span>Version:</span> 0.0.0.9000
+                </div>
+                <div>
+                <span>Modified:</span> 2026-06-02
+                </div>
+                <div>
+                <span>Compiled:</span> 2026-06-26
+                </div>
+                <div>
+                <span>Environment:</span> R version 4.6.0 (2026-04-24)
+                </div>
+                <div>
+                <span>Bioconductor:</span> 3.23
+                </div>
+                <div>
+                <span>Dependencies:</span> DESeq2 {1.52.0}; dplyr {1.2.1}; ggplot2 {4.0.3}; ggtext {0.1.2}; GSVA {2.6.2}; magrittr {2.0.5}; msigdbr {26.1.0}; patchwork {1.3.2}; readr {2.2.0}; scales {1.4.0}; Seurat {5.5.0}; singscore {1.32.0}; svglite {2.2.2}; tibble {3.3.1}; tidyr {1.3.2}; viridisLite {0.4.3}; rlang {1.1.0}
+                </div>
+                <div>
+                <span>Source:</span> <a href="https://github.com/ZohebKhan1/expression-matched-bulk-scoring">https://github.com/ZohebKhan1/expression-matched-bulk-scoring</a>
+                </div>
+                </div>
+                </div>
+                <div id="introduction" class="section level1 hasAnchor" number="1">
+                <h1 class="hasAnchor"><span class="header-section-number">1</span> Introduction<a href="#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+                <p>This tutorial shows how to calculate expression-matched gene-set scores for bulk RNA-seq samples.</p>
+                <p>The worked example uses a processed, D0-free GSE122380 iPSC-to-cardiomyocyte differentiation time course. The input expression matrix is already normalized and transformed with a DESeq2-style variance-stabilizing workflow.<sup><a href="#ref-deseq2">6</a></sup> <code>calc_bulk_module_score()</code> does not normalize raw counts.</p>
+                <p>The tutorial has three goals:</p>
+                <ol style="list-style-type: decimal">
+                <li>define the expression-matched bulk scoring calculation</li>
+                <li>show how to score public and custom gene sets</li>
+                <li>visualize score patterns across differentiation day and PCA space</li>
+                </ol>
+                <p>The public gene-set example scores three modules: an embryonic stem-cell signature, a Gene Ontology paraxial mesoderm term, and a KEGG cardiac muscle contraction gene set:</p>
+                <ul>
+                <li>embryonic stem cell signature, Ben-Porath ES2</li>
+                <li>paraxial mesoderm, <a href="GO:0048341" class="uri">GO:0048341</a></li>
+                <li>cardiac muscle contraction, KEGG</li>
+                </ul>
+                <p>The custom example scores four marker sets: progenitor, mesoderm, cardiogenic, and cardiomyocyte.</p>
+                <div id="citation-and-reuse" class="section level2 hasAnchor" number="1.1">
+                <h2 class="hasAnchor"><span class="header-section-number">1.1</span> Citation and reuse<a href="#citation-and-reuse" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+                <p>This workflow is not part of the official Seurat project and is not maintained by the Seurat authors. It is an independent bulk RNA-seq workflow that adapts the expression-matched control-subtraction idea behind Seurat’s <code>AddModuleScore()</code><sup><a href="#ref-seurat-addmodulescore">1</a></sup> to a normalized genes-by-samples matrix.</p>
+                <p>I wrote this after comparing several single-sample scoring methods for bulk RNA-seq. The approach turned out to be useful in my own analyses, so I am making the code available for others who want to test or adapt the same idea.</p>
+                <p>The original Seurat <code>AddModuleScore()</code> function was developed for single-cell data. This repository applies the same general scoring principle to bulk RNA-seq samples, where rows are genes and columns are samples. The code here does not call Seurat internally, but does follow their general scoring methodology with some changes to account for the differences in bulk RNA-seq data.</p>
+                <p>You are welcome to copy, modify, and adapt the code for your own data. If you use or adapt this bulk RNA-seq version of <code>AddModuleScore()</code>, please cite the original Seurat package<sup><a href="#ref-seurat-paper">8</a></sup> and Tirosh et al.,<sup><a href="#ref-tirosh">2</a></sup> because the scoring strategy used here is derived from their work.</p>
+                </div>
+                </div>
+                <div id="gse122380-bulk-rna-seq-time-course-dataset" class="section level1 hasAnchor" number="2">
+                <h1 class="hasAnchor"><span class="header-section-number">2</span> GSE122380 bulk RNA-seq time-course dataset<a href="#gse122380-bulk-rna-seq-time-course-dataset" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+                <p>The example uses <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE122380">GSE122380</a>, an iPSC-derived cardiomyocyte differentiation bulk RNA-seq time course generated by <a href="https://www.science.org/doi/10.1126/science.aaw0040">Strober, Elorbany, Rhodes et al.</a> The dataset was reprocessed and quality-controlled for this tutorial. In total, this dataset contains 192 bulk RNA-seq samples profiled across 15 days of cardiomyocyte differentiation. The design does not contain replicate libraries from the same cell line and day. Instead, 13 iPSC lines are profiled across differentiation time, which allows score consistency to be assessed across genetic backgrounds.</p>
+                <table class="sample-summary-table">
+                <caption>
+                <span id="tab:sample-summary-table">Table 1: </span>Sample overview for GSE122380 dataset used in this tutorial.
+                </caption>
+                <thead>
+                <tr>
+                <th style="text-align:left;">
+                Metric
+                </th>
+                <th style="text-align:right;">
+                D1
+                </th>
+                <th style="text-align:right;">
+                D2
+                </th>
+                <th style="text-align:right;">
+                D3
+                </th>
+                <th style="text-align:right;">
+                D4
+                </th>
+                <th style="text-align:right;">
+                D5
+                </th>
+                <th style="text-align:right;">
+                D6
+                </th>
+                <th style="text-align:right;">
+                D7
+                </th>
+                <th style="text-align:right;">
+                D8
+                </th>
+                <th style="text-align:right;">
+                D9
+                </th>
+                <th style="text-align:right;">
+                D10
+                </th>
+                <th style="text-align:right;">
+                D11
+                </th>
+                <th style="text-align:right;">
+                D12
+                </th>
+                <th style="text-align:right;">
+                D13
+                </th>
+                <th style="text-align:right;">
+                D14
+                </th>
+                <th style="text-align:right;">
+                D15
+                </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                <td style="text-align:left;">
+                Samples
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                12
+                </td>
+                <td style="text-align:right;">
+                12
+                </td>
+                <td style="text-align:right;">
+                12
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                </tr>
+                <tr>
+                <td style="text-align:left;">
+                Cell lines
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                12
+                </td>
+                <td style="text-align:right;">
+                12
+                </td>
+                <td style="text-align:right;">
+                12
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                <td style="text-align:right;">
+                13
+                </td>
+                </tr>
+                </tbody>
+                </table>
+                <p><a class="figure-ref" href="#fig-reference-pca">Figure 2A</a> and <a class="figure-ref" href="#fig-reference-pca">Figure 2B</a> visually summarize the GSE122380 dataset used in this tutorial. <a class="figure-ref" href="#fig-reference-pca">Figure 2A</a> shows a PCA of all samples across the 15 profiled time points. Samples are colored by differentiation day. PC1 largely tracks developmental progression from early pluripotent stages to later cardiomyocyte stages. Samples form approximate temporal groups corresponding to pluripotency, mesoderm, cardiac progenitor, and cardiomyocyte stages.</p>
+                <p><a class="figure-ref" href="#fig-reference-pca">Figure 2B</a> is the sample-to-sample correlation matrix heatmap of samples. Replicates are collapsed to one average across cell lines per differentiation day, then the day-level profiles are ordered from D1 through D15 and compared by Pearson correlation.</p>
+                <div id="fig-reference-pca" class="figure-anchor">
+
+                </div>
+                <p><img src="assets/figures/reference_pca_and_sample_correlation.svg" alt="" width="96%" style="display: block; margin: auto;" /></p>
+                <div class="tutorial-figure-caption">
+                <strong>Figure 2.</strong> Experimental structure of the GSE122380 differentiation time course. <strong>a.</strong> PCA of all samples using the top 10% most variable VST genes, colored by differentiation day. <strong>b.</strong> Pearson correlation matrix of replicate-collapsed day profiles using the same variable-gene set as in 2A; row and column annotations encode differentiation day.
+                </div>
+                </div>
+                <div id="background" class="section level1 hasAnchor" number="3">
+                <h1 class="hasAnchor"><span class="header-section-number">3</span> Background<a href="#background" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+                <div id="background-on-expression-matched-gene-program-scoring" class="section level2 hasAnchor" number="3.1">
+                <h2 class="hasAnchor"><span class="header-section-number">3.1</span> Background on expression-matched gene-program scoring<a href="#background-on-expression-matched-gene-program-scoring" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+                <p>The module-score idea comes from the gene-program scoring approach used by <a href="https://pubmed.ncbi.nlm.nih.gov/27124452/">Tirosh et al. <em>Science</em></a>.<sup><a href="#ref-tirosh">2</a></sup> The Seurat R package integrates this strategy through its function <code>AddModuleScore()</code>, which scores gene programs after subtracting expression-matched control genes in single-cell RNA-seq data.<sup><a href="#ref-seurat-addmodulescore">1</a></sup> The implementation can be found at the <a href="https://github.com/satijalab/seurat">Seurat GitHub page</a>, and the <a href="https://github.com/satijalab/seurat/issues/522">package authors have written</a> about <code>AddModuleScore()</code> interpretation in their GitHub issue discussions.<sup><a href="#ref-seurat-issue-522">3</a></sup> These sources are the best references for Seurat’s implementation details, especially expression binning and matched-control subtraction.<sup><a href="#ref-seurat-issue-7694">4</a></sup></p>
+                <p>Seurat also uses module-style scoring in applied workflows such as its <a href="https://satijalab.org/seurat/articles/cell_cycle_vignette">cell-cycle scoring vignette</a>.<sup><a href="#ref-seurat-vignette">7</a></sup></p>
+                </div>
+                <div id="bulk-rna-seq-implementation" class="section level2 hasAnchor" number="3.2">
+                <h2 class="hasAnchor"><span class="header-section-number">3.2</span> Bulk RNA-seq implementation<a href="#bulk-rna-seq-implementation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+                <p>Seurat’s <code>AddModuleScore()</code> was designed for scoring gene sets in single-cell gene expression matrices. This implementation applies the same expression-matched control-subtraction principle to bulk RNA-seq matrices. The bulk setting differs from single-cell scoring because each column represents a sample-level expression profile rather than a cell. Dropout is less central, but gene abundance, mean-variance structure, composition effects, and preprocessing choices still affect gene-set scores.</p>
+                <p>In brief, <code>calc_bulk_module_score()</code> performs the following steps:</p>
+                <ol style="list-style-type: decimal">
+                <li><p><strong>Start with normalized bulk expression.</strong> Let <span class="math inline">\(x_{g,s}\)</span> be the normalized expression value for gene <span class="math inline">\(g\)</span> in sample <span class="math inline">\(s\)</span>. Let <span class="math inline">\(G\)</span> be the genes in the expression matrix, <span class="math inline">\(S\)</span> be the samples, <span class="math inline">\(F\)</span> be the requested gene set, and <span class="math inline">\(U\)</span> be the genes eligible to serve as controls. By default, <span class="math inline">\(U = G\)</span>. For bulk RNA-seq, DESeq2 VST values are a standard choice because the transformation stabilizes the mean-variance relationship.<sup><a href="#ref-deseq2">6</a></sup></p></li>
+                <li><p><strong>Keep requested genes present in the matrix.</strong> The scored module <span class="math inline">\(M\)</span> is the overlap between the requested gene set and the matrix row names:</p></li>
+                </ol>
+                <p><span class="math display">\[
+                M = F \cap G
+                \]</span></p>
+                <ol start="3" style="list-style-type: decimal">
+                <li><strong>Match genes by average expression.</strong> For each gene, calculate average expression across all samples:</li>
+                </ol>
+                <p><span class="math display">\[
+                \bar{x}_{g} =
+                \frac{1}{|S|}
+                \sum_{s \in S} x_{g,s},
+                \qquad g \in G
+                \]</span></p>
+                <p>Genes are then split into <code>nbin</code> bins using <span class="math inline">\(\bar{x}_{g}\)</span>. Let <span class="math inline">\(b(g)\)</span> denote the bin assigned to gene <span class="math inline">\(g\)</span>. This binning is based on average expression across the full sample set, not on expression within one time point or condition.</p>
+                <p>The histogram below applies this binning logic to the bulk RNA-seq matrix. Genes are first ordered by their mean normalized expression, here using DESeq2’s DESeq2::vst() function with blind=FALSE, and split into 24 approximately equal-sized bins. The first and last bins therefore represent the lowest- and highest-average-expression genes in the matrix. The left panel shows each bin as one point at the median expression level, while the right panel zooms into one representative bin to show that genes inside the same bin have similar average expression and are therefore reasonable expression-matched candidates for control sampling.</p>
+                <p>A common step for bulk RNA-seq data preprocessing generally involves some type of pre-filtering for lowly-expressed genes (eg, CPM&gt;1 in at least 3 samples). Because the inclusion of lowly-expressed genes clearly influences the number of genes and therefore the average expression per bin, pre-filtering lowly expressed genes is recommended before scoring. Pre-filtering also affects the scored module itself. If requested module genes are retained despite negligible expression, the module mean can be influenced by noisy low-abundance measurements rather than reproducible expression signal.</p>
+                <p><img src="assets/figures/expression_bin_visualization.svg" alt="" width="100%" style="display: block; margin: auto;" /></p>
+                <div class="tutorial-figure-caption">
+                <strong>Figure 3.</strong> Expression-bin matching for the bulk RNA-seq matrix. The full expression distribution is shown as histogram bars colored by expression bin.
+                </div>
+                <ol start="4" style="list-style-type: decimal">
+                <li><strong>Sample expression-matched controls gene-by-gene.</strong> For each scored gene <span class="math inline">\(g \in M\)</span>, candidate controls are non-module genes from the same expression bin:</li>
+                </ol>
+                <p><span class="math display">\[
+                A_{g}
+                =
+                \{h \in U \setminus M : b(h) = b(g)\}
+                \]</span></p>
+                <p><code>calc_bulk_module_score()</code> samples up to <code>ctrl</code> controls from <span class="math inline">\(A_g\)</span> without replacement, then pools the unique sampled controls across all module genes:</p>
+                <p><span class="math display">\[
+                C = \bigcup_{g \in M} C_g
+                \]</span></p>
+                <p>If a scored gene has no eligible same-bin controls because the control universe is restricted, <code>calc_bulk_module_score()</code> falls back to the non-module control universe for that gene.</p>
+                <ol start="5" style="list-style-type: decimal">
+                <li><strong>Score each bulk RNA-seq sample.</strong> For each sample, the bulk module score is the module-gene mean minus the pooled-control mean:</li>
+                </ol>
+                <p><span class="math display">\[
+                \operatorname{BMS}_{s}
+                =
+                \frac{1}{|M|}
+                \sum_{g \in M} x_{g,s}
+                -
+                \frac{1}{|C|}
+                \sum_{h \in C} x_{h,s}
+                \]</span></p>
+                <p>A positive score means the module is higher than its expression-matched background in that sample. A negative score means the module is lower than that background.</p>
+                <p>The diagram below shows the calculation for one input gene set. Control sampling is performed gene-by-gene, but the final score is calculated once for the whole module in each sample.</p>
+                <pre class="mermaid"><code>%%{init: {&quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 44, &quot;rankSpacing&quot;: 54}}}%%
+flowchart TB
+  subgraph input[&quot; &quot;]
+    direction TB
+    X[&quot;&lt;b&gt;Expression matrix X&lt;/b&gt;&lt;br/&gt;Rows are genes G. Columns are samples S.&quot;]
+    F[&quot;&lt;b&gt;Feature set F&lt;/b&gt;&lt;br/&gt;This is the requested gene list.&quot;]
+    U[&quot;&lt;b&gt;Control universe U&lt;/b&gt;&lt;br/&gt;By default, this is all genes in G.&quot;]
+  end
+
+  subgraph matching[&quot; &quot;]
+    direction TB
+    M[&quot;&lt;b&gt;Scored module M&lt;/b&gt;&lt;br/&gt;Keep genes in F that are present in X.&quot;]
+    Xmean[&quot;&lt;b&gt;Gene-level average expression&lt;/b&gt;&lt;br/&gt;Average each gene across all samples in S.&quot;]
+    Bins[&quot;&lt;b&gt;Expression bins&lt;/b&gt;&lt;br/&gt;Assign genes in G to nbin bins by average expression.&quot;]
+    Controls[&quot;&lt;b&gt;Per-gene control sampling&lt;/b&gt;&lt;br/&gt;For each gene in M, sample up to ctrl non-module genes from the same bin.&quot;]
+    Pooled[&quot;&lt;b&gt;Pooled control set C&lt;/b&gt;&lt;br/&gt;Combine sampled controls across M and keep unique genes.&quot;]
+  end
+
+  subgraph scoring[&quot; &quot;]
+    direction TB
+    ModuleMean[&quot;&lt;b&gt;Module mean per sample&lt;/b&gt;&lt;br/&gt;Average expression across all genes in M.&quot;]
+    ControlMean[&quot;&lt;b&gt;Control mean per sample&lt;/b&gt;&lt;br/&gt;Average expression across all genes in C.&quot;]
+    Score[&quot;&lt;b&gt;Bulk module score per sample&lt;/b&gt;&lt;br/&gt;Subtract the control mean from the module mean.&quot;]
+  end
+
+  subgraph interpretation[&quot; &quot;]
+    direction TB
+    Interpret[&quot;&lt;b&gt;Interpretation&lt;/b&gt;&lt;br/&gt;Positive scores are above matched background.&lt;br/&gt;Negative scores are below matched background.&quot;]
+  end
+
+  X --&gt; M
+  F --&gt; M
+  U --&gt; Controls
+  M --&gt; Xmean --&gt; Bins --&gt; Controls --&gt; Pooled
+  M --&gt; ModuleMean
+  Pooled --&gt; ControlMean
+  ModuleMean --&gt; Score
+  ControlMean --&gt; Score
+  Score --&gt; Interpret
+
+  classDef inputNode fill:#edf4ff,stroke:#4169e1,stroke-width:2px,color:#111111;
+  classDef matchNode fill:#eef8f6,stroke:#1b7f79,stroke-width:2px,color:#111111;
+  classDef scoreNode fill:#f2ecfb,stroke:#8968cd,stroke-width:2px,color:#111111;
+  classDef finalNode fill:#fff4df,stroke:#b36b00,stroke-width:2px,color:#111111;
+  class X,F,U inputNode;
+  class M,Xmean,Bins,Controls,Pooled matchNode;
+  class ModuleMean,ControlMean,Score scoreNode;
+  class Interpret finalNode;
+  style input fill:#f7fbff,stroke:#4169e1,stroke-width:3.2px,color:#4169e1;
+  style matching fill:#f7fcfb,stroke:#1b7f79,stroke-width:3.2px,color:#1b7f79;
+  style scoring fill:#fbf8ff,stroke:#8968cd,stroke-width:3.2px,color:#8968cd;
+  style interpretation fill:#fff9e8,stroke:#b36b00,stroke-width:2.4px,color:#b36b00;</code></pre>
+                </div>
+                <div id="why-subtract-matched-controls" class="section level2 hasAnchor" number="3.3">
+                <h2 class="hasAnchor"><span class="header-section-number">3.3</span> Why subtract matched controls?<a href="#why-subtract-matched-controls" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+                <p>Averaging the module genes is the simplest score, but the average mostly reflects how highly those genes are expressed. Gene sets are often dominated by abundant, stably expressed genes, so their mean follows the overall expression level of each sample. When the expression background shifts from one sample to the next, the module mean shifts with it, whether or not the program it represents is active.</p>
+                <p>Matched control subtraction removes that baseline. For each module gene, <code>calc_bulk_module_score()</code> takes control genes at the same expression level and subtracts their mean from the module mean. Effects that all genes at that expression level share, such as overall abundance, library size, and composition, cancel out, leaving how far the module sits above other genes of comparable expression. Single-cell data need this correction because of heavy dropout. Bulk RNA-seq has little dropout, but abundance and composition effects do not go away.</p>
+                <p>The simulation is built to trigger a false positive. Its module genes carry no real signal; they are highly expressed genes pulled from a stretch of the distribution that happens to rise in Condition B. Scored on this data, the raw module mean, GSVA, singscore, ssGSEA, and PLAGE all report a Condition B increase.<sup><a href="#ref-gsva">5</a></sup> Matched subtraction removes most of it. Even then, a positive score is not proof that a pathway is active; it only tells you the set is higher than expression-matched genes in that sample.</p>
+                <p><img src="assets/figures/module_score_simulation.svg" alt="" width="100%" style="display: block; margin: auto;" /></p>
+                <div class="tutorial-figure-caption">
+                <strong>Figure 4.</strong> Simulation illustrating why matched-control subtraction can matter. <strong>a.</strong> The simulated module genes occupy the same expression range as their matched controls and share a broad Condition B background shift. <strong>b.</strong> Raw module mean, GSVA, singscore, ssGSEA, PLAGE, and module scores are computed from the same simulated log<sub>2</sub>(CPM)-scale matrix. <strong>c.</strong> The estimated Condition B minus Condition A effect is attenuated after subtracting expression-matched controls. PLAGE scores are sign-oriented to the raw module mean because the SVD sign is arbitrary.
+                </div>
+                </div>
+                </div>
+                <div id="setup-for-bulk-module-gene-set-scoring" class="section level1 hasAnchor" number="4">
+                <h1 class="hasAnchor"><span class="header-section-number">4</span> Setup for bulk module gene set scoring<a href="#setup-for-bulk-module-gene-set-scoring" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+                <p>The scoring functions live in <code>functions/</code> and are loaded with
+                <code>source("load_functions.R")</code> from the repository root.</p>
+                <p><code>calc_bulk_module_score()</code> needs two core inputs:</p>
+                <ul>
+                <li>an expression matrix</li>
+                <li>one or more gene sets</li>
+                </ul>
+                <pre class="mermaid"><code>%%{init: {&quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 22, &quot;rankSpacing&quot;: 24}, &quot;themeVariables&quot;: {&quot;fontSize&quot;: &quot;15px&quot;}}}%%
+flowchart LR
+  X[&quot;&lt;b&gt;normalized gene matrix&lt;/b&gt;&lt;br/&gt;genes x samples&quot;]
+  F[&quot;&lt;b&gt;genes_to_score&lt;/b&gt;&lt;br/&gt;gene set(s)&quot;]
+  O[&quot;&lt;b&gt;options&lt;/b&gt;&lt;br/&gt;universe, nbin, ctrl,&lt;br/&gt;seed, min_genes&quot;]
+  S[&quot;&lt;b&gt;calc_bulk_module_score()&lt;/b&gt;&quot;]
+  R[&quot;&lt;b&gt;scores&lt;/b&gt;&lt;br/&gt;samples x modules&quot;]
+
+  X --&gt; S
+  F --&gt; S
+  O --&gt; S
+  S --&gt; R
+
+  classDef input fill:#edf4ff,stroke:#4169e1,stroke-width:1.5px,color:#111111;
+  classDef option fill:#f8fafc,stroke:#64748b,stroke-width:1.3px,color:#111111;
+  classDef function fill:#eef8f6,stroke:#1b7f79,stroke-width:1.6px,color:#111111;
+  classDef output fill:#fff4df,stroke:#b36b00,stroke-width:1.6px,color:#111111;
+  class X,F input;
+  class O option;
+  class S function;
+  class R output;</code></pre>
+                <p>The expression matrix should be numeric, with genes in rows and samples in columns. Row names should be gene identifiers. Column names should be sample IDs. Gene sets must use the same identifier type as the expression matrix row names (ENTREZ, ENSEMBL, gene symbol, etc).</p>
+                <p>While <code>calc_bulk_module_score()</code> will run on any finite numeric matrix, the matrix should be normalized and transformed so samples are comparable and extreme mean-variance effects are reduced. DESeq2 VST or rlog values are appropriate choices for count matrices. Log2-transformed TPM, CPM, or DESeq2-normalized counts can also be used for exploratory scoring, provided the preprocessing is consistent across samples.</p>
+                <p>For this analysis, the input is a batch-corrected VST matrix.</p>
+                <p>The main scoring call for <code>calc_bulk_module_score()</code> is straightforward. First, pass the expression matrix, a named list of gene sets, and choose the control-sampling settings. The function validates that the expression matrix is numeric, that gene and sample names are unique, and that enough requested module genes are present to score each module. For each module, it returns one score per sample.</p>
+                <p>The full call, with every argument shown at its default, is:</p>
+                <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>score_df <span class="ot">&lt;-</span> <span class="fu">calc_bulk_module_score</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="at">x =</span> vst_mat,                 <span class="co"># normalized genes-by-samples matrix</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">genes_to_score =</span> gene_sets,  <span class="co"># one character vector, or a named list of them</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">universe =</span> <span class="cn">NULL</span>,             <span class="co"># control pool; NULL uses every gene in x</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="at">nbin =</span> <span class="dv">24</span>,                   <span class="co"># number of average-expression bins</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="at">ctrl =</span> <span class="dv">100</span>,                  <span class="co"># controls sampled per module gene</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1</span>,                    <span class="co"># random seed; NULL leaves the state unmanaged</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="at">min_genes =</span> <span class="dv">1</span>,               <span class="co"># module genes that must be present in x to score</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="at">warn_missing =</span> <span class="cn">TRUE</span>,         <span class="co"># warn when requested genes are absent from x</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="at">verbose =</span> <span class="cn">FALSE</span>              <span class="co"># TRUE also returns a per-module audit summary</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>)</span></code></pre></div>
+                <p>Key arguments are explained below:</p>
+                <p><strong>Required inputs</strong></p>
+                <ul>
+                <li><code>x</code>: numeric normalized expression matrix with gene row names and sample column names.</li>
+                <li><code>genes_to_score</code>: one gene set as a character vector, or multiple gene sets as a named list of character vectors if you are scoring multiple gene sets at once.</li>
+                </ul>
+                <p><strong>Control matching</strong></p>
+                <ul>
+                <li><code>universe</code>: optional set of genes eligible to be sampled as controls; defaults to all genes in <code>x</code>. Pre-filtering for lowly-expressed genes would therefore restrict your universe to a smaller subset of more robustly expressed genes.</li>
+                <li><code>nbin</code>: number of average-expression bins used for expression matching. The default is 24, the same as Seurat’s AddModuleScore(). With n=16,000 total expressed genes, this means that each bin will contain approximately 667 genes, which I think is a biologically reasonable number of genes to capture in a single bin. Of course, this number is arbitrary and you can change it to suit your needs.</li>
+                <li><code>ctrl</code>: maximum number of control genes sampled per module gene. Here, the default is 100 control genes per module gene. This means that for every gene that is in the scoring gene list, 100 control genes will be sampled from the same average-expression bin and used as the control set to subtract from the module mean.</li>
+                <li><code>seed</code>: random seed for reproducible control sampling; use <code>NULL</code> to leave the random state unmanaged.</li>
+                </ul>
+                <p><strong>Validation and audit output</strong></p>
+                <ul>
+                <li><code>min_genes</code>: minimum number of module genes that must be present in <code>x</code> for a module to be scored.</li>
+                <li><code>warn_missing</code>: whether to warn when genes present in the supplied scoring gene set are absent from the expression matrix <code>x</code>.</li>
+                <li><code>verbose</code>: when <code>TRUE</code>, print a compact audit summary and return gene/control details in addition to the score table.</li>
+                </ul>
+                </div>
+                <div id="go-and-msigdb-module-scores-for-gse122380" class="section level1 hasAnchor" number="5">
+                <h1 class="hasAnchor"><span class="header-section-number">5</span> GO and MSigDB module scores for GSE122380<a href="#go-and-msigdb-module-scores-for-gse122380" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+                <p>This example scores public gene sets from <a href="https://geneontology.org/">Gene Ontology</a> and <a href="https://www.gsea-msigdb.org/gsea/msigdb/">MSigDB</a> in the GSE122380 time course.<sup><a href="#ref-go">9</a></sup><sup><a href="#ref-msigdb">10</a></sup> Other useful sources of gene sets include <a href="https://reactome.org/">Reactome</a> and <a href="https://www.genome.jp/kegg/">KEGG</a>. For a tutorial workflow, the main requirement is that the gene identifiers in the gene set match the row names of the expression matrix.</p>
+                <p>In the figures below, each row shows two visualization methods for bulk module scores: on the left, a boxplot of module scores across differentiation day; on the right, a PCA plot of all samples colored by bulk module score. For each sample, <code>calc_bulk_module_score()</code> returns the mean expression of the module genes minus the mean expression of pooled expression-matched control genes. The dashed horizontal line at y = 0 marks zero, where those two means are equal in that sample. The PCA view is similar visually to coloring a single-cell embedding by module score, but here the points are bulk RNA-seq samples and not cells.</p>
+                <p>The embryonic stem-cell scores (top) are highest early (D1) and decline as differentiation progresses. The mesoderm scores increase after the pluripotency window (D2-D3), and subsequently fall as cells commit to the cardiomyocyte fate. The cardiac muscle contraction module begins to increase around D6, consistent with activation of cardiomyocyte structural and contractile programs during later differentiation.</p>
+                <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Retrieve the public gene sets used in the example.</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>get_msigdb_gene_set <span class="ot">&lt;-</span> <span class="cf">function</span>(gene_set_name, collection, <span class="at">subcollection =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  msigdbr<span class="sc">::</span><span class="fu">msigdbr</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    <span class="at">db_species =</span> <span class="st">&quot;HS&quot;</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    <span class="at">species =</span> <span class="st">&quot;Homo sapiens&quot;</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="at">collection =</span> collection,</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>    <span class="at">subcollection =</span> subcollection</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>      .data<span class="sc">$</span>gs_name <span class="sc">==</span> gene_set_name,</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>      <span class="sc">!</span><span class="fu">is.na</span>(.data<span class="sc">$</span>gene_symbol)</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">distinct</span>(.data<span class="sc">$</span>gene_symbol) <span class="sc">%&gt;%</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">pull</span>(.data<span class="sc">$</span>gene_symbol) <span class="sc">%&gt;%</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>    <span class="fu">intersect</span>(<span class="fu">rownames</span>(vst_mat))</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>}</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>public_genes_to_score <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>  <span class="at">embryonic_stem_cell_signature =</span> <span class="fu">get_msigdb_gene_set</span>(</span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>    <span class="st">&quot;BENPORATH_ES_2&quot;</span>,</span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>    <span class="at">collection =</span> <span class="st">&quot;C2&quot;</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>    <span class="at">subcollection =</span> <span class="st">&quot;CGP&quot;</span></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>  ),</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>  <span class="at">paraxial_mesoderm =</span> <span class="fu">get_msigdb_gene_set</span>(</span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>    <span class="st">&quot;GOBP_PARAXIAL_MESODERM_FORMATION&quot;</span>,</span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>    <span class="at">collection =</span> <span class="st">&quot;C5&quot;</span>,</span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>    <span class="at">subcollection =</span> <span class="st">&quot;GO:BP&quot;</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>  ),</span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>  <span class="at">kegg_cardiac_muscle_contraction =</span> <span class="fu">get_msigdb_gene_set</span>(</span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>    <span class="st">&quot;KEGG_CARDIAC_MUSCLE_CONTRACTION&quot;</span>,</span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>    <span class="at">collection =</span> <span class="st">&quot;C2&quot;</span>,</span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>    <span class="at">subcollection =</span> <span class="st">&quot;CP:KEGG_LEGACY&quot;</span></span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a>  )</span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a>)</span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>public_score_df <span class="ot">&lt;-</span> <span class="fu">calc_bulk_module_score</span>(</span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>  <span class="at">x =</span> vst_mat,</span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a>  <span class="at">genes_to_score =</span> public_genes_to_score</span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a>)</span></code></pre></div>
+                <p><img src="assets/figures/public_gene_set_module_score_run.svg" alt="" width="100%" style="display: block; margin: auto;" /></p>
+                <div class="tutorial-figure-caption">
+                <strong>Figure 5.</strong> Public gene-set module scores across the GSE122380 differentiation time course. Boxplots show score distributions by day, and matched PCA panels show the same sample-level scores projected onto the reference PCA space.
+                </div>
+                </div>
+                <div id="custom-marker-score-visualization" class="section level1 hasAnchor" number="6">
+                <h1 class="hasAnchor"><span class="header-section-number">6</span> Custom marker score visualization<a href="#custom-marker-score-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+                <p>Custom marker sets can also be supplied directly. Very small gene sets should be interpreted carefully; if a set contains only one or two genes, directly plotting the individual gene-expression trends is often more transparent and informative.</p>
+                <p>An aggregate module score summarizes a marker list without requiring a separate expression plot for every gene. This is useful when the marker set is large enough that individual-gene plots become difficult to interpret. The tradeoff is loss of gene-level detail. It is, by definition, a summary of the gene set, so it may not capture all of the biological nuance of the individual genes in the set. For small or heterogeneous marker sets, inspect the individual gene-expression trends before interpreting the aggregate score.</p>
+                <p>Below, we define custom marker gene sets for pluripotency, mesoderm, cardiogenic and cardiomyocyte stages.</p>
+                <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Define stage marker sets with the same identifier type as rownames(vst_mat).</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>custom_marker_genes <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">progenitor =</span> <span class="fu">c</span>(<span class="st">&quot;ESRG&quot;</span>, <span class="st">&quot;NANOG&quot;</span>, <span class="st">&quot;SOX2&quot;</span>, <span class="st">&quot;TDGF1&quot;</span>, <span class="st">&quot;POU5F1&quot;</span>),</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="at">mesoderm =</span> <span class="fu">c</span>(<span class="st">&quot;EOMES&quot;</span>, <span class="st">&quot;MESP1&quot;</span>, <span class="st">&quot;MESP2&quot;</span>, <span class="st">&quot;MIXL1&quot;</span>, <span class="st">&quot;TBXT&quot;</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>               <span class="st">&quot;FOXF1&quot;</span>, <span class="st">&quot;MSX1&quot;</span>, <span class="st">&quot;MSX2&quot;</span>, <span class="st">&quot;TWIST1&quot;</span>, <span class="st">&quot;SNAI1&quot;</span>, <span class="st">&quot;HAND1&quot;</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  <span class="at">cardiogenic =</span> <span class="fu">c</span>(<span class="st">&quot;TBX5&quot;</span>, <span class="st">&quot;GATA4&quot;</span>, <span class="st">&quot;NKX2-5&quot;</span>, <span class="st">&quot;MEF2C&quot;</span>),</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="at">cardiomyocyte =</span> <span class="fu">c</span>(<span class="st">&quot;ACTN2&quot;</span>, <span class="st">&quot;MYH6&quot;</span>, <span class="st">&quot;MYH7&quot;</span>, <span class="st">&quot;MYL7&quot;</span>, <span class="st">&quot;PLN&quot;</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>                    <span class="st">&quot;RYR2&quot;</span>, <span class="st">&quot;TNNC1&quot;</span>, <span class="st">&quot;TNNI3&quot;</span>, <span class="st">&quot;TNNT2&quot;</span>, <span class="st">&quot;TTN&quot;</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>)</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co"># Score all custom marker sets with the same control-matching settings.</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>custom_score_df <span class="ot">&lt;-</span> <span class="fu">calc_bulk_module_score</span>(</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>  <span class="at">x =</span> vst_mat,</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>  <span class="at">genes_to_score =</span> custom_marker_genes</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>)</span></code></pre></div>
+                <p>The analogous boxplot and PCA visualizations are shown below for the custom marker sets. The custom scores are consistent with the expected differentiation structure: progenitor scores are highest early and decline with differentiation, while cardiomyocyte scores rise later.</p>
+                <p><img src="assets/figures/custom_module_score_run.svg" alt="" width="100%" style="display: block; margin: auto;" /></p>
+                <div class="tutorial-figure-caption">
+                <strong>Figure 6.</strong> Custom marker-set scores for progenitor, mesoderm, cardiogenic, and cardiomyocyte signatures. Boxplots summarize temporal score changes, and PCA panels show where high-scoring samples fall in the differentiation trajectory.
+                </div>
+                </div>
+                <div id="module-score-correlation-scatterplots" class="section level1 hasAnchor" number="7">
+                <h1 class="hasAnchor"><span class="header-section-number">7</span> Module score correlation scatterplots<a href="#module-score-correlation-scatterplots" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+                <p>Pairwise score plots can show how module programs covary across samples. In a time-course design, these relationships can summarize transitions between marker programs. In the GSE122380 dataset, pluripotency-related scores should decline as cells differentiate into mesoderm, and mesoderm-related scores should rise transiently as cells differentiate into cardiogenic progenitors, and then decline as cells differentiate into cardiomyocytes.</p>
+                <p>The paired scatterplots below summarize two relationships: pluripotency versus mesoderm, and mesoderm versus cardiac muscle contraction. The observed relationships are consistent with the expected temporal ordering of pluripotency, mesoderm, and cardiomyocyte programs.</p>
+                <p><img src="assets/figures/public_score_relationship.svg" alt="" width="100%" style="display: block; margin: auto;" /></p>
+                <div class="tutorial-figure-caption">
+                <strong>Figure 7.</strong> Pairwise relationships between public module scores. Each point is one sample colored by differentiation day, with a linear best-fit line and quadrant labels indicating high/low score combinations after axis reversal.
+                </div>
+                </div>
+                <div id="alternative-module-score-visualizations" class="section level1 hasAnchor" number="8">
+                <h1 class="hasAnchor"><span class="header-section-number">8</span> Alternative module-score visualizations<a href="#alternative-module-score-visualizations" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+                <p>In addition to the boxplot and PCA visualizations shown above, module scores can also be visualized as a compact heatmap using the ComplexHeatmap package. In the heatmap below, each row represents a custom marker set, while each column represents the replicate-averaged module score for one differentiation time point. Columns are clustered by similarity across the marker-set scores. The clustered heatmap groups adjacent differentiation days with similar marker-score profiles, providing a compact view of temporal changes across modules.</p>
+                <p>Other visualizations may be preferable for different designs. For example, paired-line plots are useful for matched samples, while coefficient plots are useful when scores are analyzed with a regression model. The plotting code for the boxplots, PCA overlays, and heatmap is included in the repository.</p>
+                <p>
+                <img src="assets/figures/custom_marker_score_heatmap.svg?v=1782654739" alt="" width="100%" style="display: block; margin: auto;" />
+                </p>
+                <div class="tutorial-figure-caption">
+                <strong>Figure 8.</strong> Heatmap view of replicate-averaged custom marker-set scores across differentiation day. Rows are marker sets and columns are day-level profiles, with the top annotation indicating developmental time.
+                </div>
+                </div>
+                <div id="custom-marker-permutation-tests" class="section level1 hasAnchor" number="9">
+                <h1 class="hasAnchor"><span class="header-section-number">9</span> Custom marker permutation tests<a href="#custom-marker-permutation-tests" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+                <p>After scoring a module, a natural follow-up is whether its score pattern is stronger than what random gene sets of the same size would produce. <code>perm_bulk_module_score()</code> answers this by comparing the observed gene set against many size-matched null sets.</p>
+                <p>The function first scores the observed gene set with the same expression-matched procedure used by <code>calc_bulk_module_score()</code>. It then repeatedly samples null gene sets of equal size, either from matched average-expression bins (the default) or from the full eligible universe, scores each null set the same way, and compares the observed sample-, group-, or trajectory-level statistic against the null distribution. The returned object holds the observed scores, null scores, summary tables, empirical p-values, optional plots, and the parameters used for the test.</p>
+                <p>As configured in this tutorial, the steps are:</p>
+                <ol style="list-style-type: decimal">
+                <li>Score the observed marker set.</li>
+                <li>Draw a size-matched null set, one gene per observed gene from the same expression bin, and repeat this <code>n_perm</code> times.</li>
+                <li>Score each null set with the same module-score procedure.</li>
+                <li>Summarize the observed and null scores within each group, here differentiation day.</li>
+                <li>Calculate the requested trajectory statistic for the observed summary and for every null summary.</li>
+                <li>Estimate the empirical p-value as <code>(b + 1) / (n_perm + 1)</code>, where <code>b</code> is the number of null statistics at least as extreme as the observed statistic.</li>
+                </ol>
+                <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>perm <span class="ot">&lt;-</span> <span class="fu">perm_bulk_module_score</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="at">x =</span> vst_mat,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">gene_list =</span> custom_marker_genes<span class="sc">$</span>cardiomyocyte,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">metadata =</span> metadata,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">sample_col =</span> <span class="st">&quot;sample_id&quot;</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="at">group_col =</span> <span class="st">&quot;day&quot;</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  <span class="at">module_name =</span> <span class="st">&quot;Cardiomyocyte&quot;</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  <span class="at">n_perm =</span> <span class="dv">500</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="at">null_method =</span> <span class="st">&quot;matched_bins&quot;</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="at">random_genome =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="at">summary =</span> <span class="st">&quot;median&quot;</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="at">trajectory_stat =</span> <span class="st">&quot;last_minus_first&quot;</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  <span class="at">alternative =</span> <span class="st">&quot;two.sided&quot;</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>)</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>perm<span class="sc">$</span>trajectory</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>perm<span class="sc">$</span>group_p_values</span></code></pre></div>
+                <p>This test fits questions about whether module scores change across time or condition more than expected by chance. Here the null is expression-bin matched, so each random set has average-expression structure similar to the marker set. Each null-distribution panel plots the null trajectory statistics as a histogram, marks the observed value with a dashed line, and annotates the empirical p-value.</p>
+                <p>For two independent groups, a Wilcoxon rank-sum test can be used as an exploratory comparison of module scores. For paired or repeated-measure designs, use a paired test or a model that accounts for the sample structure. Such p-values should be treated as exploratory unless the test matches the experimental design and the gene set was specified independently of the data.</p>
+                <p><img src="assets/figures/custom_marker_permutation_run.svg" alt="" width="100%" style="display: block; margin: auto;" /></p>
+                <div class="tutorial-figure-caption">
+                <strong>Figure 9.</strong> Matched-bin permutation test for custom marker-set scores. Observed trajectories are compared with random gene sets of the same size sampled from expression-matched bins, and empirical null distributions summarize the expected trajectory statistic under the matched null.
+                </div>
+                </div>
+                <div id="references" class="section level1 hasAnchor" number="10">
+                <h1 class="hasAnchor"><span class="header-section-number">10</span> References<a href="#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+                <ol class="reference-list">
+                <li id="ref-seurat-addmodulescore">
+                <strong>1.</strong> Satija Lab. <a href="https://satijalab.org/seurat/reference/addmodulescore">Seurat <code>AddModuleScore()</code> reference</a> and <a href="https://github.com/satijalab/seurat/blob/HEAD/R/utilities.R">source code</a>.
+                </li>
+                <li id="ref-tirosh">
+                <strong>2.</strong> Tirosh I, Izar B, Prakadan SM, et al. <a href="https://pubmed.ncbi.nlm.nih.gov/27124452/">Dissecting the multicellular ecosystem of metastatic melanoma by single-cell RNA-seq</a>. <em>Science</em>. 2016;352(6282):189-196.
+                </li>
+                <li id="ref-seurat-issue-522">
+                <strong>3.</strong> Satija Lab Seurat issue #522. <a href="https://github.com/satijalab/seurat/issues/522">AddModuleScore scores clarification</a>.
+                </li>
+                <li id="ref-seurat-issue-7694">
+                <strong>4.</strong> Satija Lab Seurat issue #7694. <a href="https://github.com/satijalab/seurat/issues/7694">AddModuleScore function and Number of bins</a>.
+                </li>
+                <li id="ref-gsva">
+                <strong>5.</strong> Hänzelmann S, Castelo R, Guinney J. <a href="https://pubmed.ncbi.nlm.nih.gov/23323831/">GSVA: gene set variation analysis for microarray and RNA-seq data</a>. <em>BMC Bioinformatics</em>. 2013;14:7. See also the <a href="https://www.bioconductor.org/packages/release/bioc/html/GSVA.html">GSVA Bioconductor package page</a>.
+                </li>
+                <li id="ref-deseq2">
+                <strong>6.</strong> Love MI, Huber W, Anders S. <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8">Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2</a>. <em>Genome Biology</em>. 2014;15:550. See also the <a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">DESeq2 Bioconductor package page</a>.
+                </li>
+                <li id="ref-seurat-vignette">
+                <strong>7.</strong> Satija Lab. <a href="https://satijalab.org/seurat/articles/cell_cycle_vignette">Seurat cell-cycle scoring vignette</a>, an applied Seurat vignette using module-style scores.
+                </li>
+                <li id="ref-seurat-paper">
+                <strong>8.</strong> Hao Y, Stuart T, Kowalski MH, et al. <a href="https://doi.org/10.1038/s41587-023-01767-y">Dictionary learning for integrative, multimodal and scalable single-cell analysis</a>. <em>Nature Biotechnology</em>. 2023. See also the <a href="https://satijalab.org/seurat/authors">Seurat package documentation and citation guidance</a> (Seurat v5).
+                </li>
+                <li id="ref-go">
+                <strong>9.</strong> Ashburner M, Ball CA, Blake JA, et al. <a href="https://pubmed.ncbi.nlm.nih.gov/10802651/">Gene ontology: tool for the unification of biology</a>. <em>Nature Genetics</em>. 2000;25(1):25-29.
+                </li>
+                <li id="ref-msigdb">
+                <strong>10.</strong> Liberzon A, Birger C, Thorvaldsdottir H, Ghandi M, Mesirov JP, Tamayo P. <a href="https://pubmed.ncbi.nlm.nih.gov/26771021/">The Molecular Signatures Database hallmark gene set collection</a>. <em>Cell Systems</em>. 2015;1(6):417-425.
+                </li>
+                </ol>
+                </div>
+                <div id="session-info" class="section level1 hasAnchor" number="11">
+                <h1 class="hasAnchor"><span class="header-section-number">11</span> Session Info<a href="#session-info" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+                <pre><code>## R version 4.6.0 (2026-04-24)
+## Platform: x86_64-pc-linux-gnu
+## Running under: Ubuntu 24.04.4 LTS
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.12.0 
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.12.0  LAPACK version 3.12.0
+## 
+## locale:
+##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
+## 
+## time zone: America/Chicago
+## tzcode source: system (glibc)
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## loaded via a namespace (and not attached):
+##  [1] digest_0.6.39     R6_2.6.1          bookdown_0.46     fastmap_1.2.0    
+##  [5] xfun_0.58         cachem_1.1.0      knitr_1.51        htmltools_0.5.9  
+##  [9] rmarkdown_2.31    lifecycle_1.0.5   cli_3.6.6         sass_0.4.10      
+## [13] jquerylib_0.1.4   compiler_4.6.0    rstudioapi_0.18.0 tools_4.6.0      
+## [17] evaluate_1.0.5    bslib_0.11.0      yaml_2.3.12       otel_0.2.0       
+## [21] jsonlite_2.0.0    rlang_1.2.0</code></pre>
+                <!--chapter:end:tutorial.Rmd-->
+                </div>
+                <!--bookdown:body:end-->
+                 <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toc = document.querySelector(".book-summary nav > ul");
+    if (toc && !toc.classList.contains("summary")) {
+      toc.classList.add("summary");
+    }
+    if (toc && !toc.querySelector(".toc-title")) {
+      const titleItem = document.createElement("li");
+      titleItem.className = "toc-title";
+      const titleLink = document.createElement("a");
+      titleLink.href = "./";
+      titleLink.textContent = "Expression-matched bulk scoring";
+      titleItem.appendChild(titleLink);
+
+      const dividerItem = document.createElement("li");
+      dividerItem.className = "divider";
+
+      toc.insertBefore(dividerItem, toc.firstChild);
+      toc.insertBefore(titleItem, dividerItem);
+    }
+    if (toc && !toc.querySelector('a[href="reference.html"]')) {
+      const divider =
+        toc.querySelector(".toc-title + .divider") ||
+        toc.querySelector("li.divider");
+      const referenceItem = document.createElement("li");
+      referenceItem.className = "toc-reference-link chapter";
+      const referenceLink = document.createElement("a");
+      referenceLink.href = "reference.html";
+      referenceLink.textContent = "Reference";
+      referenceItem.appendChild(referenceLink);
+      if (divider && divider.nextSibling) {
+        toc.insertBefore(referenceItem, divider.nextSibling);
+      } else {
+        toc.insertBefore(referenceItem, toc.firstChild);
+      }
+    }
+    if (toc) {
+      toc.querySelectorAll("li").forEach(function (item) {
+        if (
+          !item.classList.contains("toc-title") &&
+          !item.classList.contains("divider")
+        ) {
+          item.classList.add("chapter");
+        }
+      });
+      toc.querySelectorAll("li.chapter > a").forEach(function (link) {
+        if (!link.querySelector("i.fa-check")) {
+          const icon = document.createElement("i");
+          icon.className = "fa fa-check";
+          icon.setAttribute("aria-hidden", "true");
+          link.insertBefore(icon, link.firstChild);
+        }
+      });
+    }
+
+    if (!document.getElementById("code-block-theme")) {
+      const style = document.createElement("style");
+      style.id = "code-block-theme";
+      style.textContent = `
+        .book .book-body .page-wrapper .page-inner section.normal pre:not(.mermaid),
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode,
+        .book .book-body .page-wrapper .page-inner section.normal pre.sourceCode,
+        .book .book-body .page-wrapper .page-inner section.normal code.sourceCode,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode pre,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code,
+        .book .book-body .page-wrapper .page-inner section.normal pre:not(.mermaid) code,
+        .book .book-body .page-wrapper .page-inner section.normal pre:not(.mermaid) code span {
+          background-color: #242424 !important;
+          color: #e6edf3 !important;
+          font-family: var(--tutorial-code-font) !important;
+          font-weight: 400;
+          font-variant-ligatures: none;
+        }
+
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span {
+          background-color: transparent !important;
+          font-family: var(--tutorial-code-font) !important;
+        }
+
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.al,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.er {
+          color: #ff7b72 !important;
+          font-weight: 700;
+        }
+
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.an,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.co,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.cv,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.do,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.in,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.wa {
+          color: #8b949e !important;
+          font-style: italic;
+        }
+
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.at,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.dt,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.va {
+          color: #ffa657 !important;
+        }
+
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.bn,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.cn,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.dv,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.fl {
+          color: #79c0ff !important;
+        }
+
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.bu,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.cf,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.im,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.kw,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.pp {
+          color: #ff7b72 !important;
+          font-weight: 700;
+        }
+
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.ch,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.sc,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.ss,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.st,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.vs {
+          color: #a5d6ff !important;
+        }
+
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.fu {
+          color: #d2a8ff !important;
+        }
+
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.op,
+        .book .book-body .page-wrapper .page-inner section.normal div.sourceCode code span.ot {
+          color: #ffab70 !important;
+        }
+
+        .book .book-body .page-wrapper .page-inner section.normal details.code-fold {
+          background-color: #242424 !important;
+          border-color: #2f2f2f !important;
+        }
+
+        .book .book-body .page-wrapper .page-inner section.normal details.code-fold summary {
+          color: #ffffff !important;
+        }
+
+        .book .book-body .page-wrapper .page-inner section.normal details.code-fold summary,
+        .book .book-body .page-wrapper .page-inner section.normal details.code-fold summary * {
+          color: #ffffff !important;
+        }
+
+        .book .book-body .page-wrapper .page-inner section.normal #session-info pre,
+        .book .book-body .page-wrapper .page-inner section.normal #session-info pre code,
+        .book .book-body .page-wrapper .page-inner section.normal #session-info pre code span {
+          color: #a5d6ff !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    const blocks = document.querySelectorAll("div.sourceCode, pre.sourceCode");
+
+    document
+      .querySelectorAll('.page-inner a[href^="http"]')
+      .forEach(function (link) {
+        link.setAttribute("target", "_blank");
+        link.setAttribute("rel", "noopener noreferrer");
+      });
+
+    blocks.forEach(function (block) {
+      if (block.closest("details.code-fold")) return;
+
+      const details = document.createElement("details");
+      details.className = "code-fold";
+      details.open = true;
+
+      const summary = document.createElement("summary");
+      summary.textContent = "Code";
+      summary.style.color = "#ffffff";
+
+      block.parentNode.insertBefore(details, block);
+      details.appendChild(summary);
+      details.appendChild(block);
+    });
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (!window.mermaid) return;
+
+    document.querySelectorAll("pre.mermaid > code").forEach(function (code) {
+      const diagram = document.createElement("div");
+      diagram.className = "mermaid";
+      diagram.textContent = code.textContent;
+      code.parentNode.replaceWith(diagram);
+    });
+
+    mermaid.initialize({
+      startOnLoad: true,
+      securityLevel: "loose",
+      htmlLabels: true,
+      theme: "base",
+      themeVariables: {
+        fontFamily: '"Inter", "Latin Modern Sans", Arial, sans-serif',
+        fontSize: "16px",
+        primaryTextColor: "#111111",
+        lineColor: "#555555",
+      },
+      flowchart: {
+        curve: "basis",
+        htmlLabels: true,
+        useMaxWidth: true,
+      },
+    });
+  });
+</script> 
+              </section>
+            </div>
+          </div>
+        </div>
+        <!--bookdown:link_prev-->
+        <!--bookdown:link_next-->
+      </div>
+    </div>
+    <!--bookdown:config-->
+
+        <!-- dynamically load mathjax for compatibility with self-contained -->
+    <script>
+      (function () {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        var src = "true";
+        if (src === "" || src === "true")
+          src =
+            "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+        if (location.protocol !== "file:")
+          if (/^https?:/.test(src)) src = src.replace(/^https?:/, "");
+        script.src = src;
+        document.getElementsByTagName("head")[0].appendChild(script);
+      })();
+    </script>
+      </body>
+</html>

@@ -1,0 +1,40 @@
+# R/session state
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+
+# Raw/private data
+data/raw/
+raw/
+*.fastq
+*.fastq.gz
+*.bam
+*.bai
+
+# Generated report build artifacts
+# Note: report/assets/figures/ is tracked on purpose. The PNG/SVG figures are
+# shown in the README and the published report, so they must be committed.
+report/_site/
+report/index.Rmd
+report/index.knit.md
+
+# Generated workflow outputs and local runner shim
+results/
+tools/
+
+# Local package/cache state
+renv/library/
+renv/staging/
+renv/python/
+renv/sandbox/
+
+# Local editor/system files
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
