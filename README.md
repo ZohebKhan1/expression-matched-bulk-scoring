@@ -1,7 +1,5 @@
 # Expression-matched bulk scoring
 
-[View the rendered tutorial](https://zohebkhan1.github.io/expression-matched-bulk-scoring/report/)
-
 ## Method basis
 
 R functions for expression-matched gene-set scoring in bulk RNA-seq data,
