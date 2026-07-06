@@ -1,7 +1,8 @@
 # Expression-matched bulk scoring
 
 R functions for expression-matched gene-set scoring in bulk RNA-seq data,
-adapted from control-subtraction gene-program scoring.
+derived from the control-subtraction strategy used by Seurat's
+[`AddModuleScore()`](https://satijalab.org/seurat/reference/addmodulescore).
 
 `calc_bulk_module_score()` scores each sample as the mean of the module genes
 minus the mean of expression-matched control genes. A score therefore measures
@@ -18,6 +19,27 @@ A worked tutorial on the GSE122380 iPSC-to-cardiomyocyte differentiation time
 course is in `report/` and is reproduced by
 `scripts/01_run_GSE122380_module_score_tutorial.R`. Once GitHub Pages is enabled
 it is served at `https://<owner>.github.io/<repository>/`.
+
+## Provenance and scope
+
+This workflow is an independent bulk RNA-seq adaptation of the
+expression-matched gene-program scoring idea implemented in Seurat's
+[`AddModuleScore()` documentation](https://satijalab.org/seurat/reference/addmodulescore)
+and
+[`AddModuleScore()` source code](https://github.com/satijalab/seurat/blob/HEAD/R/utilities.R).
+The scoring principle traces back to Tirosh et al.'s
+[_Science_ melanoma single-cell RNA-seq study](https://pubmed.ncbi.nlm.nih.gov/27124452/),
+which used expression-matched control subtraction to score gene programs.
+
+This repository is not part of the official Seurat project and is not
+maintained by the Seurat authors. The code here does not call Seurat
+internally; it applies the same general control-subtraction idea to a normalized
+bulk RNA-seq genes-by-samples matrix.
+
+I wrote this after comparing several single-sample scoring approaches for
+work-related bulk RNA-seq analyses. The method was useful enough in those
+analyses that I am making the code available for others who want to test,
+adapt, or improve the same idea.
 
 ## Get the functions
 
@@ -229,11 +251,9 @@ results/              module-score and permutation output tables
 
 ## Citation
 
-If you use or adapt these functions, please cite the methods they build on: the
-Seurat `AddModuleScore()` implementation and Tirosh et al., which introduced the
-expression-matched control-subtraction strategy for single-cell data. These
-functions are an independent bulk RNA-seq adaptation and are not affiliated with
-or maintained by the Seurat project; the code does not call Seurat internally.
+If you use or adapt these functions, please cite the Seurat `AddModuleScore()`
+implementation and Tirosh et al., which introduced the expression-matched
+control-subtraction strategy for single-cell data.
 
 The tutorial uses the GSE122380 iPSC-to-cardiomyocyte differentiation time
 course from Strober, Elorbany, Rhodes et al., _Science_ (2019).
