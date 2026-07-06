@@ -213,56 +213,24 @@ sets, with the empirical null distribution for each marker set.
 
 ![Custom marker permutation test](report/assets/figures/custom_marker_permutation_run.png)
 
-## Reproduce the tutorial
-
-Run the workflow from the repository root. It scores the gene sets, runs the
-permutation tests, writes tables to `results/`, and regenerates the figures.
-
-```bash
-Rscript scripts/01_run_GSE122380_module_score_tutorial.R
-```
-
-Re-render the report after editing `report/tutorial.Rmd`:
-
-```bash
-Rscript -e 'bookdown::render_book("report")'
-```
-
-## Repository layout
-
-```text
-functions/            three scoring/plotting source files
-load_functions.R      sources all three functions in the correct order
-scripts/              reproducible GSE122380 tutorial workflow
-report/               bookdown tutorial source and rendered site
-report/assets/figures/ figures shown in the README and report
-data/                  GSE122380 metadata and processed expression matrices
-results/              module-score and permutation output tables
-```
-
 ## Citation
 
-If you use or adapt these functions, please cite the Seurat `AddModuleScore()`
-implementation and Tirosh et al., which introduced the expression-matched
-control-subtraction strategy for single-cell data.
+If you use this repository, you do not need to cite me. This started as a
+personal side project for bulk RNA-seq analyses, and I am sharing it in case it
+is useful for other analyses.
 
-The tutorial uses the GSE122380 iPSC-to-cardiomyocyte differentiation time
-course from Strober, Elorbany, Rhodes et al., _Science_ (2019).
+If you use or adapt the scoring approach, please cite the original method
+sources: Seurat `AddModuleScore()` and Tirosh et al., which introduced the
+expression-matched control-subtraction strategy for gene-program scoring.
 
 ## References
 
 1. Satija Lab. [Seurat `AddModuleScore()` reference](https://satijalab.org/seurat/reference/addmodulescore) and [source code](https://github.com/satijalab/seurat/blob/HEAD/R/utilities.R).
 2. Tirosh I, Izar B, Prakadan SM, et al. [Dissecting the multicellular ecosystem of metastatic melanoma by single-cell RNA-seq](https://pubmed.ncbi.nlm.nih.gov/27124452/). _Science_. 2016;352(6282):189-196.
-3. Satija Lab. [Seurat issue #522: AddModuleScore scores clarification](https://github.com/satijalab/seurat/issues/522).
-4. Satija Lab. [Seurat issue #7694: AddModuleScore function and number of bins](https://github.com/satijalab/seurat/issues/7694).
-5. Hänzelmann S, Castelo R, Guinney J. [GSVA: gene set variation analysis for microarray and RNA-seq data](https://pubmed.ncbi.nlm.nih.gov/23323831/). _BMC Bioinformatics_. 2013;14:7.
-6. Love MI, Huber W, Anders S. [Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8). _Genome Biology_. 2014;15:550.
-7. Satija Lab. [Seurat cell-cycle scoring vignette](https://satijalab.org/seurat/articles/cell_cycle_vignette).
-8. Hao Y, Stuart T, Kowalski MH, et al. [Dictionary learning for integrative, multimodal and scalable single-cell analysis](https://doi.org/10.1038/s41587-023-01767-y). _Nature Biotechnology_. 2023.
-9. Ashburner M, Ball CA, Blake JA, et al. [Gene ontology: tool for the unification of biology](https://pubmed.ncbi.nlm.nih.gov/10802651/). _Nature Genetics_. 2000;25(1):25-29.
-10. Liberzon A, Birger C, Thorvaldsdottir H, Ghandi M, Mesirov JP, Tamayo P. [The Molecular Signatures Database hallmark gene set collection](https://pubmed.ncbi.nlm.nih.gov/26771021/). _Cell Systems_. 2015;1(6):417-425.
-11. Strober BJ, Elorbany R, Rhodes K, et al. [Dynamic genetic regulation of gene expression during cellular differentiation](https://www.science.org/doi/10.1126/science.aaw0040). _Science_. 2019;364(6447):1287-1290. Dataset: [GSE122380](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE122380).
-
-## License
-
-MIT License. See [LICENSE.md](LICENSE.md).
+3. Hänzelmann S, Castelo R, Guinney J. [GSVA: gene set variation analysis for microarray and RNA-seq data](https://pubmed.ncbi.nlm.nih.gov/23323831/). _BMC Bioinformatics_. 2013;14:7.
+4. Love MI, Huber W, Anders S. [Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8). _Genome Biology_. 2014;15:550.
+5. Satija Lab. [Seurat cell-cycle scoring vignette](https://satijalab.org/seurat/articles/cell_cycle_vignette).
+6. Hao Y, Stuart T, Kowalski MH, et al. [Dictionary learning for integrative, multimodal and scalable single-cell analysis](https://doi.org/10.1038/s41587-023-01767-y). _Nature Biotechnology_. 2023.
+7. Ashburner M, Ball CA, Blake JA, et al. [Gene ontology: tool for the unification of biology](https://pubmed.ncbi.nlm.nih.gov/10802651/). _Nature Genetics_. 2000;25(1):25-29.
+8. Liberzon A, Birger C, Thorvaldsdottir H, Ghandi M, Mesirov JP, Tamayo P. [The Molecular Signatures Database hallmark gene set collection](https://pubmed.ncbi.nlm.nih.gov/26771021/). _Cell Systems_. 2015;1(6):417-425.
+9. Strober BJ, Elorbany R, Rhodes K, et al. [Dynamic genetic regulation of gene expression during cellular differentiation](https://www.science.org/doi/10.1126/science.aaw0040). _Science_. 2019;364(6447):1287-1290. Dataset: [GSE122380](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE122380).
